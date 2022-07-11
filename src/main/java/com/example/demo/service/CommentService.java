@@ -6,6 +6,7 @@ import com.example.demo.domain.Post;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.payload.CommentDto;
 import com.example.demo.payload.CommentResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CommentService {
 
     private final CommentRepo repo;
@@ -34,6 +36,8 @@ public class CommentService {
         List<CommentDto> content = commentList
                 .stream().map(this::mapToDto).collect(Collectors.toList());
 
+        log.info("getting all comments with pagination");
+
         return new CommentResponse(content, comments.getNumber(), comments.getSize(), comments.getTotalElements());
     }
 
@@ -49,6 +53,8 @@ public class CommentService {
     }
 
     public List<CommentDto> getAllByPostId(Long postId) {
+        log.info("getting all comments by a specific post id");
+
         return repo.findAllByPostId(postId)
                 .stream().map(this::mapToDto).collect(Collectors.toList());
     }
@@ -62,12 +68,17 @@ public class CommentService {
         Post post = postService.findById(dto.getPostId());
         comment.setPost(post);
 
+        log.info("saving a comment");
+
         return repo.save(comment);
     }
 
     public void deleteById(Long id) {
         Comment comment = repo.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Comment", "id", id));
+
+        log.info("deleting a comment by id");
+
         repo.delete(comment);
     }
 }

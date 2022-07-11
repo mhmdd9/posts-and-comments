@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,5 +25,6 @@ public class Comment {
     private String email;
 
     @NotNull
+    @Column(length = 500)
     private String body;
 }
