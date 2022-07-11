@@ -56,37 +56,13 @@ public class PostServiceTests {
 
         given(postRepo.save(post)).willReturn(post);
 
-        System.out.println(postRepo);
-        System.out.println(postService);
-
         Post savedPost = postService.save(post);
-
-        System.out.println(savedPost);
 
         assertThat(savedPost).isNotNull();
     }
 
-    @DisplayName("JUnit test for saving Post method which throws exception")
-    @Test
-    public void givenExistingEmail_whenSavePost_thenThrowsException(){
-        // given - precondition or setup
-        given(postRepo.findById(post.getId()))
-                .willReturn(Optional.of(post));
-
-        System.out.println(postRepo);
-        System.out.println(postService);
-
-        // when -  action or the behaviour that we are going test
-        assertThrows(ResourceNotFoundException.class, () -> {
-            postService.save(post);
-        });
-
-        // then
-        verify(postRepo, never()).save(any(Post.class));
-    }
-
     // JUnit test for getAllPosts method
-    @DisplayName("JUnit test for getAllPosts method")
+    @DisplayName("JUnit test for get All Posts method")
     @Test
     public void givenPostsList_whenGetAllPosts_thenReturnPostsList(){
         // given - precondition or setup
@@ -109,7 +85,7 @@ public class PostServiceTests {
     }
 
     // JUnit test for getAllPosts method
-    @DisplayName("JUnit test for getAllPosts method (negative scenario)")
+    @DisplayName("JUnit test for get All Posts method (negative scenario)")
     @Test
     public void givenEmptyPostsList_whenGetAllPosts_thenReturnEmptyPostsList(){
         // given - precondition or setup
@@ -132,7 +108,7 @@ public class PostServiceTests {
     }
 
     // JUnit test for findPostById method
-    @DisplayName("JUnit test for getPostById method")
+    @DisplayName("JUnit test for get Post By Id method")
     @Test
     public void givenPostId_whenGetPostById_thenReturnPostObject(){
         // given
@@ -147,11 +123,11 @@ public class PostServiceTests {
     }
 
     // JUnit test for deletePost method
-    @DisplayName("JUnit test for deletePost method")
+    @DisplayName("JUnit test for delete Post method")
     @Test
-    public void givenPostId_whenDeletePost_thenNothing(){
+    public void givenPostId_whenDeletePost_thenThrowsException(){
         // given - precondition or setup
-        long postId = 1L;
+        long postId = 101L;
 
         willDoNothing().given(postRepo).deleteById(postId);
 
